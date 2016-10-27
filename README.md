@@ -23,7 +23,7 @@
 
 * 实例1:
 ```javascript
-// songo格式
+// songo格式(推荐)
 var query = {
   limit: 10,
   skip: 20,
@@ -60,7 +60,7 @@ var queryValues = [10, 20, 30];
 
 * 实例2:
 ```javascript
-// songo格式
+// songo格式(推荐)
 var query = {
   limit: 10,
   skip: 20,
@@ -102,7 +102,7 @@ var queryValues = [10, 20, 30, 40];
 
 * 实例3:
 ```javascript
-// songo格式
+// songo格式(推荐)
 var query = {
   limit: 10,
   skip: 20,
