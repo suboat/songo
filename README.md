@@ -28,13 +28,13 @@ URL传输songo规范(https://github.com/suboat/songo/blob/master/desc.md)
 var query = {
   limit: 10,
   skip: 20,
-  age: "$gte$30",
+  age: "$gte$30"
 };
 // 或
 var query = {
   limit: 10,
   skip: 20,
-  age$gte$: 30,
+  age$gte$: 30
 };
 // 或
 var query = {
@@ -42,7 +42,7 @@ var query = {
   skip: 20,
   age: {
       $gte$: 30
-  },
+  }
 };
 
 // 解析成的mongo格式
@@ -51,11 +51,11 @@ var queryMongo = {
   skip: 20,
   age: {
       $gt: 30
-  },
+  }
 };
 
 // 解析成的sql格式
-var querySqlWhere = "where limit=$1 and skip=$3 and age > $3";
+var querySqlWhere = "limit=$1 AND skip=$3 AND age > $3";
 var queryValues = [10, 20, 30];
 ```
 
@@ -106,7 +106,7 @@ var queryMongo = {
 };
 
 // 解析成的sql格式
-var querySqlWhere = "where limit=$1 and skip=$3 and (age > $3 and age < $4)";
+var querySqlWhere = "limit=$1 AND skip=$3 AND (age > $3 AND age < $4)";
 var queryValues = [10, 20, 30, 40];
 ```
 
@@ -116,7 +116,7 @@ var queryValues = [10, 20, 30, 40];
 var query = {
   limit: 10,
   skip: 20,
-  $or$age: ["$lte$30", "$gte$40"],
+  $or$age: ["$lte$30", "$gte$40"]
 };
 // 或
 var query = {
@@ -124,7 +124,7 @@ var query = {
   skip: 20,
   $or$: [
       {age: "$lte$30"},
-      {age: "$gte$40"},
+      {age: "$gte$40"}
   ],
 };
 // 或
@@ -133,7 +133,16 @@ var query = {
   skip: 20,
   $or$: [
       {age$lte$: 30},
-      {age$gte$: 40},
+      {age$gte$: 40}
+  ],
+};
+// 或
+var query = {
+  limit: 10,
+  skip: 20,
+  $or$: [
+      {age: {$lte$: 30}},
+      {age: {$gte$: 40}}
   ],
 };
 
@@ -144,11 +153,87 @@ var queryMongo = {
   $or: [
       {age: {$lte: 30}}, 
       {age: {$gte: 40}}
-      ]
+  ]
 };
 
 // 解析成的sql格式
-var querySqlWhere = "where limit=$1 and skip=$3 and (age < $3 or age > $4)";
+var querySqlWhere = "limit=$1 AND skip=$3 AND (age < $3 OR age > $4)";
 var queryValues = [10, 20, 30, 40];
 ```
 
+* 实例4:
+```javascript
+// songo格式(推荐)
+var query = {
+  "$and$": [
+    {
+      "$or$": [
+        {
+          "category": "type1"
+        },
+        {
+          "category": "type2"
+        }
+      ]
+    }
+  ],
+  "$or$": [
+    {
+      "$and$": [
+        {
+          "active": true,
+          "status": 0
+        }
+      ]
+    },
+    {
+      "$and$": [
+        {
+          "active": false,
+          "status": 1
+        }
+      ]
+    }
+  ],
+  "uid": "11111111-1111-1111-1111-111111111111"
+}
+
+// 解析成的mongo格式
+var queryMongo = {
+  "$and": [
+    {
+      "$or": [
+        {
+          "category": "type1"
+        },
+        {
+          "category": "type2"
+        }
+      ]
+    }
+  ],
+  "$or": [
+    {
+      "$and": [
+        {
+          "active": true,
+          "status": 0
+        }
+      ]
+    },
+    {
+      "$and": [
+        {
+          "active": false,
+          "status": 1
+        }
+      ]
+    }
+  ],
+  "uid": "11111111-1111-1111-1111-111111111111"
+};
+
+// 解析成的sql格式
+var querySqlWhere = "((category = $1 OR category = $2)) AND ((status = $3 AND active = $4) OR (status = $5 AND active = $6)) AND (uid = $7)";
+var queryValues = ["type1","type2",0,true,1,false,"11111111-1111-1111-1111-111111111111"];
+```
