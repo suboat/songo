@@ -65,7 +65,7 @@ var queryValues = [10, 20, 30];
 var query = {
   limit: 10,
   skip: 20,
-  $and$age: ["$gte$30", "$lte$40"],
+  $and$age: ["$gte$30", "$lte$40"]
 };
 // 或
 var query = {
@@ -73,7 +73,7 @@ var query = {
   skip: 20,
   $and$: [
       {age: "$gte$30"},
-      {age: "$lte$40"},
+      {age: "$lte$40"}
   ],
 };
 // 或
@@ -82,7 +82,16 @@ var query = {
   skip: 20,
   $and$: [
       {age$gte$: 30},
-      {age$lte$: 40},
+      {age$lte$: 40}
+  ],
+};
+// 或
+var query = {
+  limit: 10,
+  skip: 20,
+  $and$: [
+      {age: {$gte$: 30}},
+      {age: {$lte$: 40}}
   ],
 };
 
@@ -93,7 +102,7 @@ var queryMongo = {
   $and: [
       {age: {$gte: 30}}, 
       {age: {$lte: 40}}
-      ]
+  ]
 };
 
 // 解析成的sql格式
