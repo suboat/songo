@@ -1,5 +1,7 @@
 ## songo描述
 
+### 参考前端js库[https://github.com/axetroy/songojs](https://github.com/axetroy/songojs)
+
 ### [limit格式](#limit)
 
 > 限制获取数据的范围
@@ -7,12 +9,11 @@
 ```bash
 _limit  = value:number    // 每页获取xxx个条数据
 _page   = value:number    // 获取第xx页的数据(以0开始作为第1页)
-_skip   = value:number    // 忽略最前面的xx条数据(一般为0)
 ```
 
 例子: 每页获取10条数据，获取第0页
 
-http://127.0.0.1/demo?_limit=10&_page=0&_skip=0
+http://127.0.0.1/demo?_limit=10&_page=0
 
 ### [sort格式](#sort)
 
@@ -79,13 +80,12 @@ QueryKeyNotBetween  = nbt    string[]   // 不在...之间
 > 年=2016 && 月=10 && 日期大于15
 
 ```bash
-http://127.0.0.1/demo?_limit=10&_page=0&_skip=0&_sort=created&year=$eq$2016&month=$eq$10&date=$gte$15
+http://127.0.0.1/demo?_limit=10&_page=0&_sort=created&year=$eq$2016&month=$eq$10&date=$gte$15
 
 解析：
 
 _limit  = 10          // 每页获取10个
 _page   = 0           // 获取第0页
-_skip   = 0
 
 _sort   = created     // 按照创建时间正向排序
 
@@ -101,13 +101,12 @@ date    = $gte$15     // 日期大于15
 > 年=2016 && 在8-11月之间 && 日期等于1号 && (星期六 || 星期天)
 
 ```bash
-http://127.0.0.1/demo?_limit=50&_page=2&_skip=0&_sort=created,money,-level&year=$eq$2016&month=$bt$8,11&date=$eq$1&day=$in$0,6
+http://127.0.0.1/demo?_limit=50&_page=2&_sort=created,money,-level&year=$eq$2016&month=$bt$8,11&date=$eq$1&day=$in$0,6
 
 解析：
 
 _limit  = 50              // 每页获取50个
 _page   = 2               // 获取第2页
-_skip   = 0
 
 _sort   = created,money,-level   // 按照创建时间正向排序 >> 按照用户金额正向排序 >> 按照用户等级反向排序
 
@@ -124,13 +123,12 @@ day     = $in$0,6         // 星期六 || 星期天
 > 金额>=100 || 用户等级>10
 
 ```bash
-http://127.0.0.1/demo?_limit=20&_page=5&_skip=0&_sort=-money&$or$money=$gte$100$or$level=$gt$10
+http://127.0.0.1/demo?_limit=20&_page=5&_sort=-money&$or$money=$gte$100$or$level=$gt$10
 
 解析：
 
 _limit       = 20               // 每页获取50个
 _page        = 5                // 获取第2页
-_skip        = 0
 
 _sort        = -money           // 按照金额反向排序
 
